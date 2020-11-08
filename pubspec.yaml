@@ -164,3 +164,8 @@ flutter:
     - family: OverpassRegular
       fonts:
         - asset: assets/fonts/overpass_regular.otf
+    - family: Hemihead
+      fonts:
+        - asset: assets/fonts/hemi-head.ttf
+          weight: 500
+          style: italic

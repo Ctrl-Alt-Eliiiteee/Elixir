@@ -13,16 +13,15 @@ class AssistantPage extends StatefulWidget {
 }
 
 class _AssistantPageState extends State<AssistantPage> {
-
   stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = 'Press the button and start speaking';
   double _confidence = 1.0;
-  String Itext='';
+  String Itext = '';
 
   final FlutterTts flutterTts = FlutterTts();
 
-  Future speak(String text) async{
+  Future speak(String text) async {
     await flutterTts.setLanguage("en-IN");
     await flutterTts.setPitch(1);
     await flutterTts.setSpeechRate(0.75);
@@ -34,13 +33,14 @@ class _AssistantPageState extends State<AssistantPage> {
     username: 'apikey',
     apikey: 'BoAhawDWYJXFkK8oEcxaPjTGU-UpVO_tHB2IXzJiqC6_',
     assistantID: 'c651ffe6-41ca-49d4-bf95-fd78da397be7',
-    url: 'https://api.kr-seo.assistant.watson.cloud.ibm.com/instances/249a6829-1928-46a0-813e-a31e0aef9f74/v2',
+    url:
+        'https://api.kr-seo.assistant.watson.cloud.ibm.com/instances/249a6829-1928-46a0-813e-a31e0aef9f74/v2',
   );
 
   WatsonAssistantApiV2 watsonAssistant;
   WatsonAssistantResponse watsonAssistantResponse;
   WatsonAssistantContext watsonAssistantContext =
-  WatsonAssistantContext(context: {});
+      WatsonAssistantContext(context: {});
 
   @override
   void initState() {
@@ -71,8 +71,8 @@ class _AssistantPageState extends State<AssistantPage> {
                 onPressed: () {
                   _listen();
                   setState(() {
-                    Itext='';
-                    _text='';
+                    Itext = '';
+                    _text = '';
                   });
                 },
                 iconSize: 96,
@@ -93,9 +93,7 @@ class _AssistantPageState extends State<AssistantPage> {
             ),
             Text(
               'Confidence: ${(_confidence * 100.0).toStringAsFixed(1)}%',
-              style: TextStyle(
-                  color: Colors.white
-              ),
+              style: TextStyle(color: Colors.white),
             ),
           ],
         ),
@@ -106,8 +104,7 @@ class _AssistantPageState extends State<AssistantPage> {
             image: DecorationImage(
               image: AssetImage('images/Assistant Background.jpg'),
               fit: BoxFit.cover,
-            )
-        ),
+            )),
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -122,7 +119,8 @@ class _AssistantPageState extends State<AssistantPage> {
                       SingleChildScrollView(
                         reverse: true,
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(35.0, 200.0, 35.0, 50.0),
+                          padding: const EdgeInsets.fromLTRB(
+                              35.0, 200.0, 35.0, 50.0),
                           child: Text(
                             _text,
                             style: TextStyle(
@@ -135,17 +133,20 @@ class _AssistantPageState extends State<AssistantPage> {
                       ),
                       SingleChildScrollView(
                         reverse: true,
-                        child: Itext!=''? Container(
-                          padding: const EdgeInsets.only(left: 35.0,right: 35.0),
-                          child: Text(
-                            Itext,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ): Text(''),
+                        child: Itext != ''
+                            ? Container(
+                                padding: const EdgeInsets.only(
+                                    left: 35.0, right: 35.0),
+                                child: Text(
+                                  Itext,
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              )
+                            : Text(''),
                       ),
                     ],
                   ),
@@ -169,12 +170,11 @@ class _AssistantPageState extends State<AssistantPage> {
         _speech.listen(
           onResult: (val) => setState(() async {
             _text = val.recognizedWords;
-            if(_text=='Mute') {
+            if (_text == 'Mute') {
               await flutterTts.stop();
-              _isListening=false;
+              _isListening = false;
               _speech.stop();
-            }
-            else{
+            } else {
               watsonAssistantResponse = await watsonAssistant.sendMessage(
                   _text, watsonAssistantContext);
               Itext = watsonAssistantResponse.resultText;
@@ -184,7 +184,7 @@ class _AssistantPageState extends State<AssistantPage> {
               await flutterTts.speak(Itext);
               watsonAssistantContext = watsonAssistantResponse.context;
               setState(() {
-                _isListening=false;
+                _isListening = false;
               });
             }
             if (val.hasConfidenceRating && val.confidence > 0) {
@@ -202,10 +202,10 @@ class _AssistantPageState extends State<AssistantPage> {
 
 class GradientIcon extends StatelessWidget {
   GradientIcon(
-      this.icon,
-      this.size,
-      this.gradient,
-      );
+    this.icon,
+    this.size,
+    this.gradient,
+  );
 
   final IconData icon;
   final double size;
@@ -219,7 +219,7 @@ class GradientIcon extends StatelessWidget {
         height: size * 1.2,
         child: GlowIcon(
           icon,
-          size: size-4,
+          size: size - 4,
           color: Colors.white,
           glowColor: Colors.white,
           blurRadius: 15,
