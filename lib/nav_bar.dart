@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Elixir/nbl.dart';
 import 'Assistant.dart';
-import 'Feed.dart';
 import 'Donate.dart';
 import 'About.dart';
 import 'nbl.dart';
@@ -48,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage>
   CurvedAnimation curve;
 
   final iconList = <IconData>[
-    Icons.dynamic_feed_outlined,
+    FlutterIcons.drop_ent,
     Icons.chat,
     Icons.location_on,
     Icons.info_outline_sharp,
