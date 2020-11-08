@@ -1,85 +1,119 @@
+import 'nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class AcceptBlood extends StatefulWidget {
+// ignore: deprecated_member_use
+final _firestore = Firestore.instance;
+
+class Stream extends StatefulWidget {
   @override
-  _AcceptBloodState createState() => _AcceptBloodState();
+  _StreamState createState() => _StreamState();
 }
 
-class _AcceptBloodState extends State<AcceptBlood> {
-  String _email = 'sohamsakaria@gmail.com';
-  String _firstname = 'Soham';
-  String _lastname = 'Sakaria';
-  String _phone = '999999999';
-  String _blood = 'B+';
+class _StreamState extends State<Stream> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Text("List of Donors"),
-        backgroundColor: Colors.green,
-        centerTitle: true,
+        title: Center(child: Text('List of Donors')),
+        leading: null,
+        backgroundColor: Colors.green[600],
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          DonorCard(
-              email: _email,
-              name: (_firstname + ' ' + _lastname),
-              phone: _phone,
-              blood: _blood),
-        ],
+      body: SafeArea(
+        child: Acceptor()
       ),
     );
   }
 }
 
-class DonorCard extends StatefulWidget {
-  final String email;
-  final String name;
-  final String phone;
-  final String blood;
-
-  const DonorCard({Key key, this.email, this.name, this.phone, this.blood})
-      : super(key: key);
+class Acceptor extends StatefulWidget {
   @override
-  _DonorCardState createState() => _DonorCardState();
+  _AcceptorState createState() => _AcceptorState();
 }
 
-class _DonorCardState extends State<DonorCard> {
+class _AcceptorState extends State<Acceptor> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ButtonTheme(
-        minWidth: MediaQuery.of(context).size.width - 20,
-        child: RaisedButton(
-          onPressed: () {},
-          color: Colors.white,
-          elevation: 8,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 0, top: 0),
-                height: 120,
-                width: MediaQuery.of(context).size.width - 50,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Name: " + widget.name,
-                        style: TextStyle(fontSize: 20)),
-                    Text("Email: " + widget.email,
-                        style: TextStyle(fontSize: 20)),
-                    Text("Phone: " + widget.phone,
-                        style: TextStyle(fontSize: 20)),
-                    Text("Blood group: " + widget.blood,
-                        style: TextStyle(fontSize: 20)),
-                  ],
-                ),
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestore
+          .collection('D_A')
+          .orderBy('time', descending: false)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+        // ignore: deprecated_member_use
+        final cards = snapshot.data.documents.reversed;
+        List<DonorCards> donorCards = [];
+        for (var card in cards) {
+          final name = card.data()['First Name']+" "+card.data()['Last Name'];
+          final phone = card.data()['Phone'];
+          final bloodgrp = card.data()['Blood Type'];
+
+          final donorCard = DonorCards(
+            name: name,
+            phone: phone,
+            bloodgrp: bloodgrp,
+          );
+
+          donorCards.add(donorCard);
+        }
+        return Column(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
+                children: donorCards,
               ),
-            ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class DonorCards extends StatefulWidget {
+  DonorCards({this.name, this.phone, this.bloodgrp});
+
+  String name;
+  String phone;
+  String bloodgrp;
+
+  @override
+  _DonorCardsState createState() => _DonorCardsState();
+}
+
+class _DonorCardsState extends State<DonorCards> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(4.0),
+        child: Card(
+          elevation: 5.0,
+          child: Container(
+            decoration: BoxDecoration(
+                border: Border(
+                    left: BorderSide(
+                      width: 2,
+                        color: Colors.green
+                    )
+                ),
+            ),
+            child: ListTile(
+              title: Text(widget.name+" ("+widget.bloodgrp+")"),
+              subtitle: Text(widget.phone),
+            ),
           ),
         ),
       ),

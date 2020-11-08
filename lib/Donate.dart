@@ -41,7 +41,7 @@ class _DonateState extends State<Donate> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AcceptBlood()),
+            MaterialPageRoute(builder: (context) => Stream()),
           );
         },
         child: Container(

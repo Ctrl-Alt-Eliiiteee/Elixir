@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'nav_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+final _firestore = Firestore.instance;
 
 class RegisterDonate extends StatefulWidget {
   @override
@@ -6,10 +11,10 @@ class RegisterDonate extends StatefulWidget {
 }
 
 class _RegisterDonateState extends State<RegisterDonate> {
-  String firstname;
-  String lastname;
+  String firstname="";
+  String lastname="";
   String bloodGrp;
-  String phone;
+  String phone="";
   String bloodType = 'A+';
   @override
   Widget build(BuildContext context) {
@@ -180,7 +185,31 @@ class _RegisterDonateState extends State<RegisterDonate> {
                 minWidth: 200,
                 height: 50,
                 child: RaisedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if(firstname!=""&&lastname!=""&&phone!=""){
+                      _firestore.collection('D_A').add({
+                        'First Name': firstname,
+                        'Last Name': lastname,
+                        'Phone': phone,
+                        'Blood Type': bloodType,
+                        'time': DateTime.now(),
+                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Nav_Bar()),
+                      );
+                    }
+                    else{
+                      Fluttertoast.showToast(
+                          msg: "Please fill in all required fields",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.black54,
+                          textColor: Colors.white,
+                          fontSize: 16.0);
+                    }
+                  },
                   color: Colors.green,
                   elevation: 8,
                   child: Text("Register",
