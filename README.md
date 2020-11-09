@@ -1,6 +1,6 @@
 # MedWatch
 
-[![Watch the video](elixir.PNG)](https://youtu.be/DirB7RAHd0Y)
+[![Watch the video](MedWatch.png)](https://youtu.be/DirB7RAHd0Y)
 **(Click the image to go to the youtube video link of the App)**
 
 **FLUTTER MOBILE APP APK -** [[click here]](https://github.com/savss624/Elixir/raw/main/Elixir.apk)
@@ -26,8 +26,15 @@ a one stop location to discuss about different medical milestones , connect with
  <img src = "location.jpg" height=300> 
 3. Have one on one encrypted chat system for communication
  <img src = "english_chat.jpg" height=300> 
-4. Have a feed section for people to share recovery stories and give motivation to everyone
- <img src = "feed.jpg" height=300> 
+4. A option where potential blood donors can give in details like phone number,Name,Blood Type, etc; and those details 
+   will be shown as a list. The people requiring any specific blood type can contact them and get the required amount of 
+   blood from the donors/
+ <p float="left">
+<img src = "Donate.jpeg" height=300            > 
+<img src = "Donate-1.jpeg" height=300>
+ <img src = "Receive.jpeg" height=300            > 
+<img src = "Receive-1.jpeg" height=300>
+</p>
 5. Video calling feature available in one on one chat
  <p float="left">
 <img src = "Video-2.jpg" height=300            > 
